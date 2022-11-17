@@ -1,0 +1,29 @@
+
+alert icmp any any -> 192.168.131.112 any (msg:"PING Flooding"; ttl:100; dsize: > 200; sid:10000001; rev:1;)
+drop icmp any any -> 192.168.131.112 any (msg:"PING Flooding"; ttl:100; dsize: > 200; sid:10000002; rev:1;)
+alert icmp any any -> $HOME_NET any (msg:"ICMP test detected"; sid:10000003; rev:001; classtype:icmp-event;)
+drop icmp any any -> $HOME_NET any (msg:"ICMP test detected"; sid:10000004; rev:001; classtype:icmp-event;)
+
+alert icmp any any -> $HOME_NET any (msg:"Possible Nmap ping sweep";sid:10000005;rev:001;classtype:web-application-attack; dsize:0;)
+drop icmp any any -> $HOME_NET any (msg:"Possible Nmap ping sweep";sid:10000006;rev:001;classtype:web-application-attack; dsize:0;)
+
+alert tcp any any -> any any (msg:"TCP test detected"; flags:S; sameip; sid:10000007; rev: 1;)
+drop tcp any any -> any any (msg:"TCP test detected"; flags:S; sameip; sid:10000008; rev: 1;)
+
+alert icmp any any -> $HOME_NET any (msg: "Posible Ping of death"; sid:10000009; rev:001; dsize: >1510; classtype:misc-activity;)
+drop icmp any any -> $HOME_NET any (msg: "Posible Ping of death"; sid:100000010; rev:001; dsize: >1510; classtype:misc-activity;)
+
+alert tcp any any -> $HOME_NET any (msg:"TCP Port Scanning";sid:100000011;rev:001;classtype:web-application-attack; detection_filter:track by_src, count 30, seconds 60;)
+drop tcp any any -> $HOME_NET any (msg:"TCP Port Scanning";sid:100000012;rev:001;classtype:web-application-attack; detection_filter:track by_src, count 30, seconds 60;)
+
+alert tcp !$HOME_NET any -> $HOME_NET 80 (msg:"Suspicious IP address";sid:100000013; rev:001;classtype:web-application-attack;)
+drop tcp !$HOME_NET any -> $HOME_NET 80 (msg:"Suspicious IP address";sid:100000014; rev:001;classtype:web-application-attack;)
+
+alert tcp any any -> $HOME_NET any (msg:"Nmap XMAS Tree Scan";sid:100000015;rev:001;flags:FPU;classtype:web-application-attack;)
+drop tcp any any -> $HOME_NET any (msg:"Nmap XMAS Tree Scan";sid:100000016;rev:001;flags:FPU;classtype:web-application-attack;)
+
+#alert tcp $HOME_NET any -> $HOME_NET 80 (msg:"Possible TCP DoS";sid:100000017;rev:001;flags: S;classtype:attempted-dos;flow:stateless;threshold:type both,track by_dst,count 70,seconds 10;)
+#drop tcp $HOME_NET any -> $HOME_NET 80 (msg:"Possible TCP DoS";sid:100000018;rev:001;flags: S;classtype:attempted-dos;flow:stateless;threshold:type both,track by_dst,count 70,seconds 10;)
+
+
+
